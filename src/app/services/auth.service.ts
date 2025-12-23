@@ -1,24 +1,57 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, finalize, Observable, of, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private apiUrl = 'http://localhost:8091/api/auth'; 
   currentUser = signal<any>(JSON.parse(localStorage.getItem('user') || 'null'));
 
-  constructor(private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string) {
-    const user = { email, name: 'Guest User', role: 'Premium' };
-    localStorage.setItem('user', JSON.stringify(user));
-    this.currentUser.set(user);
-    this.router.navigate(['/dashboard']);
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signin`, credentials).pipe(
+      tap((res: any) => {
+        localStorage.setItem('token', res.token);
+        const user = { email: credentials.email, token: res.token };
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUser.set(user);
+      })
+    );
   }
 
-  logout() {
-    localStorage.removeItem('user');
+  register(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signup`, userData);
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+   logout() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.http.post(`${this.apiUrl}/signout`, {}).pipe(
+        catchError(err => {
+          console.error("Server-side signout failed", err);
+          return of(null); 
+        }),
+        finalize(() => {
+          this.clearLocalSession();
+        })
+      ).subscribe();
+    } else {
+      this.clearLocalSession();
+    }
+  }
+
+  private clearLocalSession() {
+    localStorage.clear();
     this.currentUser.set(null);
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn() { return !!this.currentUser(); }
+  isLoggedIn() { return !!this.getToken(); }
 }

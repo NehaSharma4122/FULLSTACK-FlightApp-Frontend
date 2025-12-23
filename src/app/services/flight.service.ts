@@ -7,7 +7,6 @@ export class FlightService {
   private apiKey = '5RpaHcWtEil5U7p33qUH5A4ScZN9JOTR';
   private apiSecret = 'BoRF3nhq0WAPqXki';
   private baseUrl = 'https://test.api.amadeus.com';
-
   constructor(private http: HttpClient) {}
 
   private getToken(): Observable<any> {
