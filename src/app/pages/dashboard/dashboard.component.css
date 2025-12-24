@@ -86,11 +86,13 @@
     background: none;
     border: 1px solid #f70101;
     color: #0b0a0a;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 5px 20px;
+    border-radius: 10px;
+    width: 100px;
     padding: 15px;
     cursor: pointer;
     font-size: 15px;
+    font-weight: bold;
 }
 
 .btn-cancel:hover {

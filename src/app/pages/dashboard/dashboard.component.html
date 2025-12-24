@@ -43,7 +43,7 @@
             <p><strong>Status:</strong> <span class="confirmed">Confirmed</span></p>
           </div>
           <div class="b-price">
-            <p>{{b.currency}} {{b.price}}</p>
+            <p>{{b.currency}}₹ {{(b.price*105.70).toFixed(0)}}</p>
             <button class="btn-cancel" (click)="cancelBooking(b.id)">Cancel</button>
           </div>
         </div>

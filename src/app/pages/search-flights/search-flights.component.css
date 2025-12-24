@@ -197,3 +197,9 @@ select {
     color: var(--ai-red);
     margin-bottom: 10px;
 }
+.error {
+  color: #d32f2f;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}

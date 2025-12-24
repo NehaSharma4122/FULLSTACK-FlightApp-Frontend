@@ -13,6 +13,9 @@
         <label>Origin</label>
         <input type="text" [(ngModel)]="searchData.fromName" (input)="onCitySearch($event, 'from')" placeholder="Type City (e.g. Delhi)">
         <ul class="suggestion-list" *ngIf="fromSuggestions.length > 0">
+          <div class="error" *ngIf="errors.from">
+            {{ errors.from }}
+          </div>
           <li *ngFor="let city of fromSuggestions" (click)="selectCity(city, 'from')">
             <strong>{{city.name}}</strong> <span>{{city.iataCode}}</span>
             <small>{{city.address.countryName}}</small>
@@ -23,6 +26,9 @@
       <div class="field autocomplete-container">
         <label>Destination</label>
         <input type="text" [(ngModel)]="searchData.toName" (input)="onCitySearch($event, 'to')" placeholder="Type City (e.g. Mumbai)">
+        <div class="error" *ngIf="errors.to">
+          {{ errors.to }}
+        </div>
         <ul class="suggestion-list" *ngIf="toSuggestions.length > 0">
           <li *ngFor="let city of toSuggestions" (click)="selectCity(city, 'to')">
             <strong>{{city.name}}</strong> <span>{{city.iataCode}}</span>
@@ -34,12 +40,19 @@
       <div class="field">
         <label>Date</label>
         <input type="date" [(ngModel)]="searchData.date">
+        <div class="error" *ngIf="errors.date">
+        {{ errors.date }}
       </div>
-
+      </div>
       <div class="field action">
-        <button class="btn-search" (click)="onSearch()">FIND FLIGHTS</button>
+        <button class="btn-search" (click)="onSearch()" [disabled]="loading">{{ loading ? 'Searching...' : 'FIND FLIGHTS' }}</button>
       </div>
     </div>
+  </div>
+  <div class="text-center">
+    <small class="error" *ngIf="errors.general">
+      {{ errors.general }}
+    </small>
   </div>
 
   <!-- Flight Results Section -->

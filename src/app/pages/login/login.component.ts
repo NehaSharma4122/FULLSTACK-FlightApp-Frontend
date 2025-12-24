@@ -11,7 +11,6 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  // These MUST match the names in your HTML [(ngModel)]
   loginData = { email: '', password: '' };
 
   constructor(private auth: AuthService, private router: Router) {}
@@ -26,7 +25,7 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error("Login Error", err);
-        alert("Login Failed: " + (err.error?.message || "Check your backend"));
+        alert("Invalid credentials" + (err.error?.message || "Check your email and password"));
       }
     });
   }
