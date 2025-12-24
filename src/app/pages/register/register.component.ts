@@ -11,18 +11,21 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  regData = { name: '', email: '', password: '' };
+  regData = { username: '', email: '', password: '' };
 
   constructor(private auth: AuthService, private router: Router) {}
 
   onRegister() {
-    if (this.regData.email && this.regData.name) {
-      localStorage.setItem('user', JSON.stringify({
-        name: this.regData.name,
-        email: this.regData.email
-      }));
-      alert('Registration Successful! Please login.');
-      this.router.navigate(['/login']);
-    }
+    this.auth.register(this.regData).subscribe({
+      next: () => {
+        alert('Registration Successful! Please login.');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Registration Error', err);
+        alert(err.error?.message || 'Registration failed');
+      }
+    });
   }
+
 }
