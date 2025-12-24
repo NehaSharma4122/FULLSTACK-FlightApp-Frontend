@@ -2,11 +2,14 @@
   <div class="container py-5">
     <!-- User Header Card -->
     <div class="user-profile-card">
-      <div class="user-info">
-        <div class="avatar">{{user.name[0]}}</div>
-        <div>
-          <h2>{{user.name}}</h2>
-          <p class="loyalty-tier">Member ID: AI-982341 | <span>Gold Status</span></p>
+      <div class="user-info" *ngIf="user">
+        <div class="avatar">{{ user.name?.charAt(0) }}</div>
+
+        <div class="user-text">
+          <h2 class="user-name">{{ user.name }}</h2>
+          <p class="loyalty-tier">
+            Member ID: AI-982341 | <span>Gold Status</span>
+          </p>
         </div>
       </div>
       <div class="loyalty-stats">

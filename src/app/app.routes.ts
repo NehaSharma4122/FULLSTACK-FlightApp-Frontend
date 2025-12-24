@@ -11,6 +11,12 @@ export const routes: Routes = [
   { path: 'search', component: SearchFlightsComponent }, 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./pages/dashboard/dashboard.component')
+        .then(m => m.DashboardComponent),
+    canActivate: [authGuard]
+  },
   { path: '**', redirectTo: '' }
 ];

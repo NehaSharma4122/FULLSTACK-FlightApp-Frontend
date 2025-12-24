@@ -11,14 +11,14 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-  user: any = null;
   bookings: any[] = [];
 
   constructor(private auth: AuthService) {}
+  get user() {
+    return this.auth.currentUser();
+  }
 
   ngOnInit() {
-    // Get user from auth service
-    this.user = this.auth.currentUser();
     this.loadBookings();
   }
 

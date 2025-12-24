@@ -84,20 +84,36 @@
 
 .btn-cancel {
     background: none;
-    border: 1px solid #ddd;
-    color: #999;
+    border: 1px solid #f70101;
+    color: #0b0a0a;
     padding: 5px 10px;
     border-radius: 4px;
+    padding: 15px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .btn-cancel:hover {
-    background: #fee;
-    color: #d00;
+    background: rgb(255, 2, 2);
+    color: rgb(249, 242, 242);
 }
 
 .empty-state {
     text-align: center;
     padding: 60px;
     color: #888;
+}
+
+.btn-link{
+    background: none;
+    border: 1px solid var(--ai-red);
+    color: #0d0d0d;
+    padding: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: medium;
+}
+.btn-link:hover{
+    color: #ddd;
+    background-color: var(--ai-red);
 }

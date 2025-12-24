@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, Observable, of, tap } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,7 +15,8 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/signin`, credentials).pipe(
       tap((res: any) => {
         localStorage.setItem('token', res.token);
-        const user = { email: credentials.email, token: res.token };
+        // const user = { email: credentials.email, token: res.token };
+        const user = this.decodeUser(res.token);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUser.set(user);
       })
@@ -52,6 +54,14 @@ export class AuthService {
     this.currentUser.set(null);
     this.router.navigate(['/login']);
   }
+  private decodeUser(token: string) {
+  const decoded: any = jwtDecode(token);
+
+  return {
+    email: decoded.sub,
+    name: decoded.username   
+  };
+}
 
   isLoggedIn() { return !!this.getToken(); }
 }
