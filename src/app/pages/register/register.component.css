@@ -81,3 +81,88 @@
     text-decoration: none;
     font-weight: bold;
 }
+
+/* ───────── ROLE SELECT DROPDOWN ───────── */
+
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    background: #fafafa;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.form-group select:hover {
+    border-color: var(--ai-red);
+    background: #fff;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--ai-red);
+    box-shadow: 0 0 6px rgba(180, 0, 30, 0.4);
+}
+
+/* ───────── USER / ADMIN TOGGLE PILL ───────── */
+
+.role-toggle {
+    display: flex;
+    justify-content: space-between;
+    background: #f3f3f3;
+    border-radius: 40px;
+    padding: 6px;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+}
+
+.toggle-option {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #666;
+}
+
+.toggle-option:hover {
+    background: #fff;
+}
+
+/* ACTIVE STATE */
+
+.toggle-option.active {
+    background: var(--ai-red);
+    color: white;
+    box-shadow: 0 6px 12px rgba(180, 0, 30, 0.35);
+    transform: scale(1.03);
+}
+
+/* ───────── SMALL UX EXTRAS ───────── */
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    background: #fff;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: var(--ai-red);
+    box-shadow: 0 0 6px rgba(180, 0, 30, 0.35);
+    outline: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}

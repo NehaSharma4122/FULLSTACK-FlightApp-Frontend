@@ -11,7 +11,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  regData = { username: '', email: '', password: '' };
+  regData = {
+    username: '',
+    email: '',
+    password: '',
+    role: 'ROLE_USER'   
+  };
 
   constructor(private auth: AuthService, private router: Router) {}
 

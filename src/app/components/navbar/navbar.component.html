@@ -11,8 +11,18 @@
       @if (!auth.currentUser()) {
         <a routerLink="/login">Login</a>
         <a routerLink="/register" class="btn-gold">Register</a>
-      } @else {
-        <a routerLink="/dashboard">My Dashboard</a>
+      } 
+      @else {
+        @let role =
+          auth.currentUser()?.role ??
+          auth.currentUser()?.roles?.[0] ??
+          '';
+        @if (role.includes('ROLE_ADMIN')) {
+          <a routerLink="/admin">Admin Dashboard</a>
+        }
+        @else {
+          <a routerLink="/dashboard">User Dashboard</a>
+        }
         <button (click)="auth.logout()" class="logout-btn">Logout</button>
       }
     </div>

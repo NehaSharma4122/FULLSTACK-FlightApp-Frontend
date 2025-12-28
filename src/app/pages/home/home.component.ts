@@ -12,13 +12,32 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  searchData = { from: '', to: '', date: '' };
+  searchData = {
+    from: '',
+    to: '',
+    travelDate: '',
+    returnDate: '',
+    tripType: 'ONE_WAY'
+  };
   flights: any[] = [];
 
   constructor(private flightService: FlightService) {}
 
-  onSearch() {
-    this.flightService.searchFlights(this.searchData.from, this.searchData.to, this.searchData.date)
-      .subscribe(data => this.flights = data);
-  }
+  // onSearch() {
+
+  //   const req = {
+  //     fromPlace: this.searchData.from,
+  //     toPlace: this.searchData.to,
+  //     travelDate: this.searchData.travelDate,
+  //     returnDate: this.searchData.tripType === 'ROUND_TRIP'
+  //                 ? this.searchData.returnDate
+  //                 : null,
+  //     tripType: this.searchData.tripType
+  //   };
+
+  //   this.flightService.searchFlights(req)
+  //     .subscribe((data: any[]) => {
+  //       this.flights = data;
+  //     });
+  // }
 }

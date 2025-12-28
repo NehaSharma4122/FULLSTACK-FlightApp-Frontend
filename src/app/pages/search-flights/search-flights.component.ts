@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { FlightService } from '../../services/flight.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-flights',
@@ -11,107 +12,107 @@ import { FlightService } from '../../services/flight.service';
   styleUrl: './search-flights.component.css'
 })
 export class SearchFlightsComponent {
-  searchData = { from: '', fromName: '', to: '', toName: '', date: '' };
-  fromSuggestions: any[] = [];
-  toSuggestions: any[] = [];
-  flights: any[]=[];
-  loading=false;
-  errors = {
+  searchData = {
+    from: '',
+    to: '',
+    travelDate: '',
+    returnDate: '',
+    tripType: 'ONE_WAY'
+  };
+  flights: any[] = [];
+  loading = false;
+
+  errors: any = {
     from: '',
     to: '',
     date: '',
+    returnDate: '',
     general: ''
   };
 
-  constructor(private flightService: FlightService) {}
+
+  constructor(private flightService: FlightService,   private router: Router) {}
 
   validateForm(): boolean {
-    // reset errors
-    this.errors = { from: '', to: '', date: '', general: '' };
 
+    this.errors = { from: '', to: '', date: '', returnDate: '', general: '' };
     let valid = true;
 
     if (!this.searchData.from) {
-      this.errors.from = 'Please select a departure city';
+      this.errors.from = 'Please enter origin';
       valid = false;
     }
 
     if (!this.searchData.to) {
-      this.errors.to = 'Please select a destination city';
-      valid = false;
-    }
-    if (this.searchData.from && this.searchData.to &&
-        this.searchData.from === this.searchData.to) {
-      this.errors.general = 'Departure and destination cannot be the same';
+      this.errors.to = 'Please enter destination';
       valid = false;
     }
 
-    if (!this.searchData.date) {
-      this.errors.date = 'Please select a travel date';
+    if (this.searchData.from === this.searchData.to) {
+      this.errors.general = 'Origin & destination cannot be same';
       valid = false;
-    } else {
-      const today = new Date();
-      today.setHours(0,0,0,0);
+    }
 
-      const selectedDate = new Date(this.searchData.date);
-      if (selectedDate < today) {
-        this.errors.date = 'Travel date cannot be in the past';
+    if (!this.searchData.travelDate) {
+      this.errors.date = 'Select departure date';
+      valid = false;
+    }
+
+    // ---- ROUND TRIP VALIDATION ----
+    if (this.searchData.tripType === 'ROUND_TRIP') {
+
+      if (!this.searchData.returnDate) {
+        this.errors.returnDate = 'Select return date';
+        valid = false;
+      }
+
+      if (this.searchData.returnDate < this.searchData.travelDate) {
+        this.errors.returnDate = 'Return date cannot be before departure';
         valid = false;
       }
     }
+
     return valid;
   }
-  onSearch() {
+ onSearch() {
+
     if (!this.validateForm()) return;
+
     this.loading = true;
-    this.flightService.searchFlights(this.searchData.from, this.searchData.to, this.searchData.date)
+
+    const req = {
+      fromPlace: this.searchData.from,
+      toPlace: this.searchData.to,
+      travelDate: this.searchData.travelDate,
+      returnDate: this.searchData.tripType === 'ROUND_TRIP'
+                  ? this.searchData.returnDate
+                  : null,
+      tripType: this.searchData.tripType
+    };
+
+    this.flightService.searchFlights(req)
       .subscribe({
         next: (res: any) => {
-          this.flights = res.data;
+          this.flights = res;  // Flux -> array
           this.loading = false;
         },
         error: () => {
           this.loading = false;
-          alert("Error fetching flights. Please try again");
+          alert("Error fetching flights");
         }
       });
   }
-  onCitySearch(event: any, type: 'from' | 'to') {
-    const query = event.target.value;
-    if (query.length > 0) { 
-      this.flightService.searchCities(query).subscribe(res => {
-        if (type === 'from') this.fromSuggestions = res.data;
-        else this.toSuggestions = res.data;
-      });
-    }
-    else{
-      this.fromSuggestions=[]
-      this.toSuggestions=[]
-    }
+
+  goToBooking(f: any) {
+    localStorage.setItem('selectedFlight', JSON.stringify({
+      flightId: f.flightId,
+      from: f.fromPlace,
+      to: f.toPlace,
+      date: f.travelDate,
+      price: f.price
+    }));
+
+    this.router.navigate(['/booking']);
   }
 
-  selectCity(city: any, type: 'from' | 'to') {
-    if (type === 'from') {
-      this.searchData.from = city.iataCode;
-      this.searchData.fromName = `${city.name} (${city.iataCode})`;
-      this.fromSuggestions = []; 
-    } else {
-      this.searchData.to = city.iataCode;
-      this.searchData.toName = `${city.name} (${city.iataCode})`;
-      this.toSuggestions = []; 
-    }
-  }
-
-  bookFlight(flight: any) {
-    const existing = JSON.parse(localStorage.getItem('myBookings') || '[]');
-    existing.push({
-      id: flight.id,
-      from: this.searchData.from,
-      to: this.searchData.to,
-      date: this.searchData.date,
-      price: flight.price.total
-    });
-    localStorage.setItem('myBookings', JSON.stringify(existing));
-    alert("Flight Booked Successfully!");
-  }
 }

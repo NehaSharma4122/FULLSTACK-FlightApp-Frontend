@@ -6,12 +6,16 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule,RouterLink], // 2. MUST HAVE THIS
+  imports: [FormsModule,RouterLink], 
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  loginData = { email: '', password: '' };
+  loginData = {
+    email: '',
+    password: '',
+    role: 'ROLE_USER'
+  };
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -19,13 +23,30 @@ export class LoginComponent {
     console.log("Login button clicked!", this.loginData);
     
     this.auth.login(this.loginData).subscribe({
-      next: (res) => {
-        console.log("Login Success", res);
-        this.router.navigate(['/dashboard']);
+      next: (res: any) => {
+
+        const user = {
+          name: res.username,
+          email: res.email,
+          role: res.role,
+          token: res.token
+        };
+
+        localStorage.setItem('user', JSON.stringify(user));   // ✅ STORE USER
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('name',res.username);
+
+        if (user.role === 'ROLE_ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
+
+
       error: (err) => {
         console.error("Login Error", err);
-        alert("Invalid credentials" + (err.error?.message || "Check your email and password"));
+        alert(err.error?.message || "Invalid email or password");
       }
     });
   }

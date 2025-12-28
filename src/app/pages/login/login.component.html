@@ -10,6 +10,23 @@
       <label>Password</label>
       <input type="password" [(ngModel)]="loginData.password" name="password" placeholder="Enter password">
     </div>
+    <div class="form-group">
+      <label>Login As</label>
+      <div class="role-toggle">
+        <div
+          class="toggle-option"
+          [class.active]="loginData.role === 'ROLE_USER'"
+          (click)="loginData.role = 'ROLE_USER'">
+          USER
+        </div>
+        <div
+          class="toggle-option"
+          [class.active]="loginData.role === 'ROLE_ADMIN'"
+          (click)="loginData.role = 'ROLE_ADMIN'">
+          ADMIN
+        </div>
+      </div>
+  </div>
     <button class="btn-primary btn-primary-full" (click)="handleLogin()">LOGIN</button>
     <p class="switch footer-links">New user? <a routerLink="/register">Register here</a></p>
   </div>

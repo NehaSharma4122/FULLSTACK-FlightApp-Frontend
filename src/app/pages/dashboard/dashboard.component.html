@@ -1,6 +1,5 @@
 <div class="dashboard-bg">
   <div class="container py-5">
-    <!-- User Header Card -->
     <div class="user-profile-card">
       <div class="user-info" *ngIf="user">
         <div class="avatar">{{ user.name?.charAt(0) }}</div>
@@ -24,11 +23,10 @@
       </div>
     </div>
 
-    <!-- Bookings Section -->
     <div class="dashboard-content mt-5">
       <div class="section-header">
         <h3>My Upcoming Journeys</h3>
-        <button class="btn-primary" routerLink="/search">+ New Booking</button>
+        <button class="btn-primary" routerLink="/booking">+ New Booking</button>
       </div>
 
       <div class="booking-list" *ngIf="bookings.length > 0; else noBookings">
@@ -40,11 +38,16 @@
           </div>
           <div class="b-details">
             <p><strong>Date:</strong> {{b.date}}</p>
-            <p><strong>Status:</strong> <span class="confirmed">Confirmed</span></p>
+            <p><strong>PNR:</strong> {{b.pnr}}</p>
+            <p><strong>Status:</strong>
+              <span class="confirmed">{{b.status}}</span>
+            </p>
           </div>
           <div class="b-price">
             <p>{{b.currency}}₹ {{(b.price*105.70).toFixed(0)}}</p>
-            <button class="btn-cancel" (click)="cancelBooking(b.id)">Cancel</button>
+            <button class="btn-cancel" (click)="cancelBooking(b.pnr)">
+              Cancel
+            </button>
           </div>
         </div>
       </div>

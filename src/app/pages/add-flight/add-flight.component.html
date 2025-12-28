@@ -1,0 +1,65 @@
+<div class="add-flight-card">
+  <h2>Add New Flight</h2>
+
+  <form (ngSubmit)="addFlight()">
+
+    <div class="form-field">
+      <label>Airline Name</label>
+      <input [(ngModel)]="flight.airline_name" name="airline_name" required>
+    </div>
+
+    <div class="form-field">
+      <label>Flight Number</label>
+      <input [(ngModel)]="flight.flightNumber" name="flightNumber" required>
+    </div>
+
+    <div class="form-field full-width">
+      <label>Airline Logo URL</label>
+      <input [(ngModel)]="flight.airline_logo" name="airline_logo" placeholder="https://logo-url.com/img.png">
+    </div>
+
+    <div class="form-field">
+      <label>From</label>
+      <input [(ngModel)]="flight.fromPlace" name="fromPlace" required placeholder="City or Airport Code">
+    </div>
+
+    <div class="form-field">
+      <label>To</label>
+      <input [(ngModel)]="flight.toPlace" name="toPlace" required placeholder="City or Airport Code">
+    </div>
+
+    <div class="form-field">
+      <label>Departure</label>
+      <input type="datetime-local" [(ngModel)]="flight.departure" name="departure" required>
+    </div>
+
+    <div class="form-field">
+      <label>Arrival</label>
+      <input type="datetime-local" [(ngModel)]="flight.arrival" name="arrival" required>
+    </div>
+
+    <div class="form-field">
+      <label>Price (INR)</label>
+      <input type="number" [(ngModel)]="flight.price" name="price" required>
+    </div>
+
+    <div class="form-field">
+      <label>Available Seats</label>
+      <input type="number" [(ngModel)]="flight.availableSeats" name="availableSeats" required>
+    </div>
+
+    <div class="form-field full-width">
+      <label>Meal Type</label>
+      <select [(ngModel)]="flight.mealType" name="mealType">
+        <option value="VEG">VEG</option>
+        <option value="NON_VEG">NON VEG</option>
+        <option value="BOTH">BOTH</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" type="submit">
+      Add Flight to Schedule
+    </button>
+
+  </form>
+</div>

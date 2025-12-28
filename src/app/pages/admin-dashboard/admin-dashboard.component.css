@@ -1,0 +1,129 @@
+.user-profile-card {
+  border-bottom: 5px solid var(--ai-red);
+}
+
+.loyalty-tier span {
+  color: var(--ai-red);
+  font-weight: bold;
+}
+.dashboard-bg {
+    background: #f0f2f5;
+    min-height: 90vh;
+}
+
+.user-profile-card {
+    background: #333;
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 5px solid var(--ai-gold);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar {
+    width: 70px;
+    height: 70px;
+    background: var(--ai-red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.loyalty-tier span {
+    color: var(--ai-gold);
+    font-weight: bold;
+}
+
+.loyalty-stats {
+    display: flex;
+    gap: 40px;
+    text-align: right;
+}
+
+.stat label {
+    font-size: 12px;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+.stat p {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ai-gold);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.booking-item {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.city {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.confirmed {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.btn-cancel {
+    background: none;
+    border: 1px solid #f70101;
+    color: #0b0a0a;
+    padding: 5px 20px;
+    border-radius: 10px;
+    width: 100px;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn-cancel:hover {
+    background: rgb(255, 2, 2);
+    color: rgb(249, 242, 242);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px;
+    color: #888;
+}
+
+.btn-link{
+    background: none;
+    border: 1px solid var(--ai-red);
+    color: #0d0d0d;
+    padding: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: medium;
+}
+.btn-link:hover{
+    color: #ddd;
+    background-color: var(--ai-red);
+}

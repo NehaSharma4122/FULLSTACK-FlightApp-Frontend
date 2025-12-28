@@ -27,12 +27,11 @@ export class DashboardComponent implements OnInit {
     this.bookings = savedBookings ? JSON.parse(savedBookings) : [];
   }
 
-  cancelBooking(id: any) {
-    if(confirm("Are you sure you want to cancel this flight?")) {
-      let current = JSON.parse(localStorage.getItem('myBookings') || '[]');
-      current = current.filter((b: any) => b.id !== id);
-      localStorage.setItem('myBookings', JSON.stringify(current));
-      this.loadBookings(); // Refresh the list
-    }
+  cancelBooking(pnr: string) {
+    if (!confirm("Are you sure you want to cancel this flight?")) return;
+    let current = JSON.parse(localStorage.getItem('myBookings') || '[]');
+    current = current.filter((b: any) => b.pnr !== pnr);
+    localStorage.setItem('myBookings', JSON.stringify(current));
+    this.loadBookings();
   }
 }

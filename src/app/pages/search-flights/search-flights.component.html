@@ -10,45 +10,41 @@
   <div class="search-panel">
     <div class="search-form">
       <div class="field autocomplete-container">
-        <label>Origin</label>
-        <input type="text" [(ngModel)]="searchData.fromName" (input)="onCitySearch($event, 'from')" placeholder="Type City (e.g. Delhi)">
-        <ul class="suggestion-list" *ngIf="fromSuggestions.length > 0">
-          <div class="error" *ngIf="errors.from">
-            {{ errors.from }}
-          </div>
-          <li *ngFor="let city of fromSuggestions" (click)="selectCity(city, 'from')">
-            <strong>{{city.name}}</strong> <span>{{city.iataCode}}</span>
-            <small>{{city.address.countryName}}</small>
-          </li>
-        </ul>
+        <label>Trip Type</label>
+        <select [(ngModel)]="searchData.tripType">
+          <option value="ONE_WAY">One Way</option>
+          <option value="ROUND_TRIP">Round Trip</option>
+        </select>
       </div>
-
+      <div class="field autocomplete-container">
+        <label>Origin</label>
+        <input type="text" [(ngModel)]="searchData.from" placeholder="Enter city / airport">
+        <div class="error" *ngIf="errors.from">{{ errors.from }}</div>
+      </div>
       <div class="field autocomplete-container">
         <label>Destination</label>
-        <input type="text" [(ngModel)]="searchData.toName" (input)="onCitySearch($event, 'to')" placeholder="Type City (e.g. Mumbai)">
-        <div class="error" *ngIf="errors.to">
-          {{ errors.to }}
-        </div>
-        <ul class="suggestion-list" *ngIf="toSuggestions.length > 0">
-          <li *ngFor="let city of toSuggestions" (click)="selectCity(city, 'to')">
-            <strong>{{city.name}}</strong> <span>{{city.iataCode}}</span>
-            <small>{{city.address.countryName}}</small>
-          </li>
-        </ul>
+        <input type="text" [(ngModel)]="searchData.to" placeholder="Enter city / airport">
+        <div class="error" *ngIf="errors.to">{{ errors.to }}</div>
       </div>
 
       <div class="field">
-        <label>Date</label>
-        <input type="date" [(ngModel)]="searchData.date">
-        <div class="error" *ngIf="errors.date">
-        {{ errors.date }}
+        <label>Departure Date</label>
+        <input type="date" [(ngModel)]="searchData.travelDate">
+        <div class="error" *ngIf="errors.date">{{ errors.date }}</div>
       </div>
+
+    <!-- RETURN DATE (only when round trip) -->
+      <div class="field" *ngIf="searchData.tripType === 'ROUND_TRIP'">
+        <label>Return Date</label>
+        <input type="date" [(ngModel)]="searchData.returnDate">
+        <div class="error" *ngIf="errors.returnDate">{{ errors.returnDate }}</div>
       </div>
       <div class="field action">
-        <button class="btn-search" (click)="onSearch()" [disabled]="loading">{{ loading ? 'Searching...' : 'FIND FLIGHTS' }}</button>
+          <button class="btn-search" (click)="onSearch()" [disabled]="loading">{{ loading ? 'Searching...' : 'FIND FLIGHTS' }}</button>
       </div>
     </div>
   </div>
+
   <div class="text-center">
     <small class="error" *ngIf="errors.general">
       {{ errors.general }}
@@ -62,26 +58,15 @@
         <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-designs_343694-2506.jpg" alt="Logo">
       </div>
 
-      <div class="f-time">
-        <p class="date-label">{{ f.itineraries[0].segments[0].departure.at | date:'EEE, dd MMM' }}</p>
-        <p class="time-main">{{ f.itineraries[0].segments[0].departure.at | date:'shortTime' }}</p>
-        <p class="city-code">{{ searchData.from }}</p>
-      </div>
+      <h3>{{ f.airline_name }} ({{ f.flightNumber }})</h3>
 
-      <div class="f-duration">
-        <span>Non-stop</span>
-        <div class="line"></div>
-      </div>
+      <p>{{ f.fromPlace }} → {{ f.toPlace }}</p>
 
-      <div class="f-time">
-        <p class="date-label">{{ f.itineraries[0].segments[0].arrival.at | date:'EEE, dd MMM' }}</p>
-        <p class="time-main">{{ f.itineraries[0].segments[0].arrival.at | date:'shortTime' }}</p>
-        <p class="city-code">{{ searchData.to }}</p>
-      </div>
+      <p>{{ f.departure | date:'shortTime' }} - {{ f.arrival | date:'shortTime' }}</p>
 
       <div class="f-price">
-        <p class="price">₹ {{ (f.price.total*105.70).toFixed(0) }}</p>
-        <button class="btn-primary" (click)="bookFlight(f)">Book Now</button>
+        <p class="price">₹ {{ (f.price*105.70).toFixed(0) }}</p>
+        <button class="btn-primary" (click)="goToBooking(f)">Book Now</button>
       </div>
     </div>
   </div>

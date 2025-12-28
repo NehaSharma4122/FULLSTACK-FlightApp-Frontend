@@ -3,8 +3,12 @@ import { HomeComponent } from './pages/home/home.component';
 import { SearchFlightsComponent } from './pages/search-flights/search-flights.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
+import { BookingComponent } from './pages/booking/booking';
+import { userGuard } from './guards/user.guard';
+import { AdminFlightsComponent } from './pages/admin-flights/admin-flights.component';
+import { AddFlightComponent } from './pages/add-flight/add-flight.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, 
@@ -16,7 +20,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/dashboard/dashboard.component')
         .then(m => m.DashboardComponent),
-    canActivate: [authGuard]
+    canActivate: [userGuard]
   },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./pages/admin-dashboard/admin-dashboard.component')
+        .then(m => m.AdminDashboardComponent),
+    canActivate: [authGuard, adminGuard]
+  },
+  { path: 'booking', component: BookingComponent, canActivate:[userGuard]},
+  { path: 'admin-flights', component: AdminFlightsComponent, canActivate: [adminGuard] },
+  { path: 'add-flight', component: AddFlightComponent, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' }
 ];

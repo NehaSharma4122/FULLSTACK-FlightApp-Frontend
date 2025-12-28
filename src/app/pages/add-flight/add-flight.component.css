@@ -1,0 +1,98 @@
+/* Container for the form section */
+.add-flight-card {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-top: 6px solid #D41217; /* Air India Red */
+}
+
+h2 {
+  color: #333;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid Layout for the Form */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 20px;
+}
+
+/* Individual field wrapper */
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Full width for specific rows (like Button or Logo URL) */
+.full-width {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 6px;
+  margin-left: 2px;
+}
+
+input, select {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #fdfdfd;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #D41217;
+  box-shadow: 0 0 0 3px rgba(212, 18, 23, 0.1);
+  background-color: #fff;
+}
+
+/* Button Styling */
+.btn-primary {
+  grid-column: span 2; /* Make button full width */
+  background-color: #D41217;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #a30e12;
+  box-shadow: 0 5px 15px rgba(163, 14, 18, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Responsive: Stack columns on small screens */
+@media (max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+  .full-width, .btn-primary {
+    grid-column: span 1;
+  }
+}

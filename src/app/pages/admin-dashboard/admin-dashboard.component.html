@@ -1,0 +1,73 @@
+<div class="dashboard-bg">
+  <div class="container py-5">
+
+    <div class="user-profile-card">
+      <div class="user-info" *ngIf="admin">
+        <div class="avatar">{{ admin.name?.charAt(0) }}</div>
+
+        <div class="user-text">
+          <h2 class="user-name">{{ admin.name }}</h2>
+          <p class="loyalty-tier">
+            Role: <span>ADMIN</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="loyalty-stats">
+        <div class="stat">
+          <label>Total Flights</label>
+          <p>{{ flights.length }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-content mt-5">
+
+      <div class="section-header">
+        <h3>Flight Management</h3>
+
+        <button class="btn-primary" routerLink="/add-flight">
+          + Add New Flight
+        </button>
+      </div>
+
+      <div class="booking-list" *ngIf="flights.length; else noFlights">
+        <div class="booking-item" *ngFor="let f of flights">
+
+          <div class="b-route">
+            <span class="city">{{f.fromPlace}}</span>
+            <span class="plane-icon">✈️</span>
+            <span class="city">{{f.toPlace}}</span>
+          </div>
+
+          <div class="b-details">
+            <p><strong>Flight:</strong> {{f.flightNumber}}</p>
+            <p><strong>Date:</strong> {{f.departure | date}}</p>
+            <p><strong>Seats:</strong> {{f.availableSeats}}</p>
+          </div>
+
+          <div class="b-price">
+            <p>₹ {{ f.price }}</p>
+
+            <button class="btn-primary" routerLink="/admin-flights">
+              Manage
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <ng-template #noFlights>
+        <div class="empty-state">
+          <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="100">
+          <p>No flights found.</p>
+
+          <button class="btn-link" routerLink="/add-flight">
+            Add First Flight
+          </button>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</div>

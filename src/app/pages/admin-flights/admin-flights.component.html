@@ -1,0 +1,46 @@
+<h2>Flight Inventory</h2>
+
+<button routerLink="/admin/add-flight" class="btn-primary">
+  + Add New Flight
+</button>
+
+<div *ngIf="loading">Loading flights...</div>
+
+<table *ngIf="!loading && flights.length">
+  <thead>
+    <tr>
+      <th>Airline</th>
+      <th>Flight No</th>
+      <th>Route</th>
+      <th>Departure</th>
+      <th>Arrival</th>
+      <th>Seats</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let f of flights">
+      <td>
+        <img [src]="f.airline_logo" width="30">
+        {{ f.airline_name }}
+      </td>
+
+      <td>{{ f.flightNumber }}</td>
+
+      <td>{{ f.fromPlace }} → {{ f.toPlace }}</td>
+
+      <td>{{ f.departure | date:'short' }}</td>
+
+      <td>{{ f.arrival | date:'short' }}</td>
+
+      <td>{{ f.availableSeats }}</td>
+
+      <td>₹ {{ f.price }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !flights.length">
+  No flights found.
+</div>

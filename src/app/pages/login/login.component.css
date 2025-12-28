@@ -64,3 +64,33 @@ h2 {
     text-decoration: none;
     font-weight: bold;
 }
+.role-toggle {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.toggle-option {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-weight: 700;
+  border: 2px solid #999;
+  cursor: pointer;
+  transition: 0.2s ease;
+  user-select: none;
+}
+
+/* Default state */
+.toggle-option:hover {
+  border-color: var(--ai-red);
+}
+
+/* Selected button */
+.toggle-option.active {
+  background: var(--ai-red);
+  border-color: var(--ai-red);
+  color: white;
+  transform: translateY(-2px);
+}

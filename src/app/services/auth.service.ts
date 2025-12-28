@@ -7,18 +7,28 @@ import { jwtDecode } from 'jwt-decode';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = 'http://localhost:8091/api/auth'; 
-  currentUser = signal<any>(JSON.parse(localStorage.getItem('user') || 'null'));
-
+  currentUser = signal<any>(JSON.parse(this.getUserFromStorage()));
+  
   constructor(private http: HttpClient, private router: Router) {}
-
+  
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/signin`, credentials).pipe(
       tap((res: any) => {
         localStorage.setItem('token', res.token);
-        // const user = { email: credentials.email, token: res.token };
-        const user = this.decodeUser(res.token);
-        localStorage.setItem('user', JSON.stringify(user));
-        this.currentUser.set(user);
+
+          let user = {
+            name: res.username ?? res.name,
+            email: res.email ?? res.sub,
+            role: res.role ?? res.userRole ?? null
+            
+          };
+          if (!user.role) {
+            const decoded = this.decodeUser(res.token);
+            user.role = decoded.role;
+          }
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUser.set(user);
+        
       })
     );
   }
@@ -31,18 +41,37 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-   logout() {
-    const token = localStorage.getItem('token');
+  getUser() {
+    return JSON.parse(localStorage.getItem('user') || 'null');
+  }
+
+  getRole() {
+    return this.getUser()?.role;
+  }
+
+  isAdmin() {
+    return this.getRole() === 'ROLE_ADMIN';
+  }
+
+  isUser() {
+    return this.getRole() === 'ROLE_USER';
+  }
+  getUserFromStorage() {
+    const data = localStorage.getItem('user');
+    return data ? JSON.parse(data) : null;
+  }
+  isLoggedIn() {
+    return !!this.getToken();
+  }
+
+  // ---------------- LOGOUT ----------------
+  logout() {
+    const token = this.getToken();
 
     if (token) {
       this.http.post(`${this.apiUrl}/signout`, {}).pipe(
-        catchError(err => {
-          console.error("Server-side signout failed", err);
-          return of(null); 
-        }),
-        finalize(() => {
-          this.clearLocalSession();
-        })
+        catchError(() => of(null)),
+        finalize(() => this.clearLocalSession())
       ).subscribe();
     } else {
       this.clearLocalSession();
@@ -54,14 +83,19 @@ export class AuthService {
     this.currentUser.set(null);
     this.router.navigate(['/login']);
   }
+  
   private decodeUser(token: string) {
   const decoded: any = jwtDecode(token);
 
   return {
     email: decoded.sub,
-    name: decoded.username   
-  };
-}
+    name: decoded.username,
+    role: decoded.role ||
+              decoded.roles ||
+              decoded.authorities?.[0] ||
+              decoded.scope ||
+              null   
+      };
+  }
 
-  isLoggedIn() { return !!this.getToken(); }
 }
