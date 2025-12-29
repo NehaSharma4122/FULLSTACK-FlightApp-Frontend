@@ -1,0 +1,14 @@
+<div class="cancel-wrapper">
+  <div class="cancel-card">
+    <h2 class="text-danger">Cancel Booking</h2>
+    <p>Please enter your PNR to cancel the ticket.</p>
+    
+    <div class="form-group">
+      <input type="text" [(ngModel)]="pnr" placeholder="Enter PNR">
+    </div>
+
+    <button class="btn-cancel" (click)="confirmCancel()">CONFIRM CANCELLATION</button>
+    <br><br>
+    <a routerLink="/dashboard" style="color: #666;">Go Back</a>
+  </div>
+</div>

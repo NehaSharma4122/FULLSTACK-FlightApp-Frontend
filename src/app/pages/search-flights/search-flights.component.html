@@ -4,70 +4,72 @@
   </div>
 </div>
 
-<!-- Added margin-bottom directly to this wrapper to ensure gap even without results -->
 <div class="container search-wrapper" style="margin-bottom: 100px;">
   
   <div class="search-panel">
     <div class="search-form">
-      <div class="field autocomplete-container">
+      <div class="field">
         <label>Trip Type</label>
         <select [(ngModel)]="searchData.tripType">
           <option value="ONE_WAY">One Way</option>
           <option value="ROUND_TRIP">Round Trip</option>
         </select>
       </div>
-      <div class="field autocomplete-container">
+      <div class="field">
         <label>Origin</label>
-        <input type="text" [(ngModel)]="searchData.from" placeholder="Enter city / airport">
+        <input type="text" [(ngModel)]="searchData.from" placeholder="e.g. Delhi">
         <div class="error" *ngIf="errors.from">{{ errors.from }}</div>
       </div>
-      <div class="field autocomplete-container">
+      <div class="field">
         <label>Destination</label>
-        <input type="text" [(ngModel)]="searchData.to" placeholder="Enter city / airport">
+        <input type="text" [(ngModel)]="searchData.to" placeholder="e.g. Chennai">
         <div class="error" *ngIf="errors.to">{{ errors.to }}</div>
       </div>
 
       <div class="field">
-        <label>Departure Date</label>
+        <label>Departure</label>
         <input type="date" [(ngModel)]="searchData.travelDate">
         <div class="error" *ngIf="errors.date">{{ errors.date }}</div>
       </div>
 
-    <!-- RETURN DATE (only when round trip) -->
       <div class="field" *ngIf="searchData.tripType === 'ROUND_TRIP'">
-        <label>Return Date</label>
+        <label>Return</label>
         <input type="date" [(ngModel)]="searchData.returnDate">
         <div class="error" *ngIf="errors.returnDate">{{ errors.returnDate }}</div>
       </div>
+      
       <div class="field action">
-          <button class="btn-search" (click)="onSearch()" [disabled]="loading">{{ loading ? 'Searching...' : 'FIND FLIGHTS' }}</button>
+          <!-- Use loading() -->
+          <button class="btn-search" (click)="onSearch()" [disabled]="loading()">
+            {{ loading() ? 'SEARCHING...' : 'FIND FLIGHTS' }}
+          </button>
       </div>
     </div>
-  </div>
-
-  <div class="text-center">
-    <small class="error" *ngIf="errors.general">
-      {{ errors.general }}
-    </small>
   </div>
 
   <!-- Flight Results Section -->
-  <div class="results-container" *ngIf="flights.length > 0">
-    <div class="flight-card" *ngFor="let f of flights">
+  <div class="results-container" *ngIf="!loading() && flights().length > 0">
+    <div class="flight-card" *ngFor="let f of flights()">
       <div class="f-logo">
-        <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-designs_343694-2506.jpg" alt="Logo">
+        <img src='https://cdn-icons-png.flaticon.com/512/7893/7893979.png' alt="Logo">
+        <h3>{{ f.airline_name }} <small>({{ f.flightNumber }})</small></h3>
       </div>
 
-      <h3>{{ f.airline_name }} ({{ f.flightNumber }})</h3>
-
-      <p>{{ f.fromPlace }} → {{ f.toPlace }}</p>
-
-      <p>{{ f.departure | date:'shortTime' }} - {{ f.arrival | date:'shortTime' }}</p>
+      <div class="f-info">
+        <p class="route">{{ f.fromPlace }} <span class="arrow">✈</span> {{ f.toPlace }}</p>
+        <p class="times">{{ f.departure | date:'shortTime' }} - {{ f.arrival | date:'shortTime' }}</p>
+      </div>
 
       <div class="f-price">
-        <p class="price">₹ {{ (f.price*105.70).toFixed(0) }}</p>
+        <!-- Using a standard multiplier if your price is in USD, otherwise remove it -->
+        <p class="price">₹ {{ f.price }}</p>
         <button class="btn-primary" (click)="goToBooking(f)">Book Now</button>
       </div>
     </div>
+  </div>
+
+  <!-- No Results Found -->
+  <div class="no-results" *ngIf="!loading() && flights().length === 0 && searchData.from">
+      <p>No flights found for this route. Try another date.</p>
   </div>
 </div>

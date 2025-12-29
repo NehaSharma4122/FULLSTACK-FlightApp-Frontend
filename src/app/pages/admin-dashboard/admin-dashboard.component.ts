@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -12,8 +12,8 @@ import { FlightService } from '../../services/flight.service';
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent implements OnInit {
-
-  flights: any[] = [];
+  allFlightsCount = signal(0);
+  flights = signal<any[]>([]);
 
   constructor(
     private auth: AuthService,
@@ -25,12 +25,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadFlights();
+    this.loadDashboardData();
   }
 
-  loadFlights() {
-    this.flightService.getAllFlights().subscribe(res => {
-      this.flights = res as any[];
+  loadDashboardData() {
+      this.flightService.getAllFlights().subscribe(res => {
+      this.allFlightsCount.set(res.length);
+      this.flights.set(res.slice(-3).reverse()); 
     });
   }
 }

@@ -1,62 +1,79 @@
 <div class="dashboard-bg">
   <div class="container py-5">
-    <div class="user-profile-card">
-      <div class="user-info" *ngIf="user">
-        <div class="avatar">{{ user.name?.charAt(0) }}</div>
-
-        <div class="user-text">
-          <h2 class="user-name">{{ user.name }}</h2>
-          <p class="loyalty-tier">
-            Member ID: AI-982341 | <span>Gold Status</span>
-          </p>
+    
+    <!-- Profile Section -->
+    <div class="profile-card card-shadow">
+      <div class="user-header" *ngIf="user">
+        <div class="avatar-circle">{{ user.name?.charAt(0) }}</div>
+        <div class="user-meta">
+          <h2>Welcome back, {{ user.name }}</h2>
+          <span class="status-badge">Gold Tier Member</span>
         </div>
       </div>
-      <div class="loyalty-stats">
-        <div class="stat">
+      <div class="stats-grid">
+        <div class="stat-item">
           <label>Flying Returns Points</label>
           <p>12,450</p>
         </div>
-        <div class="stat">
-          <label>Tier Points</label>
-          <p>450 / 1000</p>
+        <div class="stat-item">
+          <label>Member ID</label>
+          <p>AI-982341</p>
         </div>
       </div>
     </div>
 
-    <div class="dashboard-content mt-5">
+    <!-- Action Tiles (2 in a row) -->
+    <div class="action-grid mt-5">
+      <div class="tile-box" routerLink="/search">
+        <div class="tile-icon">✈️</div>
+        <h3>Search Flights</h3>
+        <p>Find new destinations</p>
+      </div>
+      <div class="tile-box" routerLink="/booking">
+        <div class="tile-icon">🎟️</div>
+        <h3>New Booking</h3>
+        <p>Reserve your next seat</p>
+      </div>
+      <div class="tile-box" routerLink="/search-pnr">
+        <div class="tile-icon">🔍</div>
+        <h3>Search Booking</h3>
+        <p>Find PNR or Email</p>
+      </div>
+      <div class="tile-box danger-border" routerLink="/cancel-booking">
+        <div class="tile-icon">🚫</div>
+        <h3>Cancel Booking</h3>
+        <p>Request a refund</p>
+      </div>
+    </div>
+
+    <!-- Journeys Section -->
+    <div class="journeys-section mt-5">
       <div class="section-header">
-        <h3>My Upcoming Journeys</h3>
-        <button class="btn-primary" routerLink="/booking">+ New Booking</button>
+        <h3>Upcoming Journeys</h3>
       </div>
 
       <div class="booking-list" *ngIf="bookings.length > 0; else noBookings">
-        <div class="booking-item shadow-sm" *ngFor="let b of bookings">
-          <div class="b-route">
-            <span class="city">{{b.from}}</span>
-            <span class="plane-icon">✈️</span>
-            <span class="city">{{b.to}}</span>
+        <div class="journey-card card-shadow" *ngFor="let b of bookings">
+          <div class="route">
+            <div class="city">{{b.from}}</div>
+            <div class="plane">✈️</div>
+            <div class="city">{{b.to}}</div>
           </div>
-          <div class="b-details">
+          <div class="info">
             <p><strong>Date:</strong> {{b.date}}</p>
-            <p><strong>PNR:</strong> {{b.pnr}}</p>
-            <p><strong>Status:</strong>
-              <span class="confirmed">{{b.status}}</span>
-            </p>
+            <p><strong>PNR:</strong> <span class="pnr-text">{{b.pnr}}</span></p>
           </div>
-          <div class="b-price">
-            <p>{{b.currency}}₹ {{(b.price*105.70).toFixed(0)}}</p>
-            <button class="btn-cancel" (click)="cancelBooking(b.pnr)">
-              Cancel
-            </button>
+          <div class="price-action">
+            <p class="price">₹ {{(b.price*105.70).toFixed(0)}}</p>
+            <button class="btn-cancel-small" (click)="cancelBooking(b.pnr)">Cancel</button>
           </div>
         </div>
       </div>
 
       <ng-template #noBookings>
-        <div class="empty-state">
-          <img src="https://cdn-icons-png.flaticon.com/512/6122/6122709.png" width="100">
-          <p>No upcoming flights. Ready for a new adventure?</p>
-          <button class="btn-link" routerLink="/search">Search Flights Now</button>
+        <div class="empty-state card-shadow">
+          <p>No upcoming journeys. Time for a new trip?</p>
+          <button class="btn-primary" routerLink="/search">Plan Now</button>
         </div>
       </ng-template>
     </div>

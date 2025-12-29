@@ -1,0 +1,184 @@
+/* Container & Layout */
+.inventory-wrapper {
+    background: var(--ai-light);
+    min-height: 90vh;
+    padding-bottom: 50px;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+}
+
+.title-area h1 {
+    color: var(--ai-red);
+    margin: 0;
+    font-weight: 800;
+    font-size: 28px;
+}
+
+.title-area p {
+    color: #666;
+    margin: 5px 0 10px 0;
+    font-size: 14px;
+}
+
+.back-link {
+    color: var(--ai-gold);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17px;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: var(--ai-darkpurple);
+    text-decoration: underline;
+}
+
+/* Table Card */
+.table-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(115, 12, 146, 0.08); /* Subtle purple shadow */
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inventory-table th {
+    background: var(--ai-darkpurple);
+    color: white;
+    padding: 18px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.inventory-table td {
+    padding: 18px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+    color: var(--ai-dark);
+}
+
+.inventory-table tr:last-child td {
+    border-bottom: none;
+}
+
+.inventory-table tr:hover {
+    background-color: #fcf6ff; /* Very light purple highlight */
+}
+
+/* Airline UI */
+.airline-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+}
+
+.mini-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 2px;
+}
+
+/* Flight Badge */
+.flight-badge {
+    background: #f0f0f0;
+    color: #444;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Route Info */
+.route-info .arrow {
+    color: var(--ai-gold);
+    margin: 0 8px;
+    font-weight: bold;
+}
+
+.route-info strong {
+    font-size: 15px;
+}
+
+/* Price & Seats */
+.price-tag {
+    color: var(--ai-red);
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.seat-count {
+    font-weight: bold;
+    color: #28a745; /* Green for available */
+    background: #e8f5e9;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+}
+
+.seat-count.low {
+    color: #d9534f; /* Red for low stock */
+    background: #ffebee;
+}
+
+/* Loading Spinner */
+.loader-box {
+    text-align: center;
+    padding: 100px 0;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #eee;
+    border-top: 5px solid var(--ai-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-inventory {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+    border-radius: 12px;
+}
+
+.empty-inventory h3 {
+    color: var(--ai-darkpurple);
+    margin: 20px 0 10px;
+}
+
+.empty-inventory p {
+    color: #777;
+}
+
+/* Utility Class */
+.mt-3 {
+    margin-top: 1rem;
+}

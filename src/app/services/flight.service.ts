@@ -1,5 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+export interface FlightResponse {
+  id: string;
+  airline_name: string;
+  airline_logo: string;
+  flightNumber: string;
+  fromPlace: string;
+  toPlace: string;
+  departure: string;
+  arrival: string;
+  price: number;
+  availableSeats: number;
+  mealType: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class FlightService {
@@ -9,18 +24,16 @@ export class FlightService {
 
   constructor(private http: HttpClient) {}
 
-  // USER + ADMIN
-  searchFlights(req: any) {
-    return this.http.post(`${this.baseUrl}/search`, req);
+  searchFlights(req: any):Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/search`, req);
   }
 
-  // ADMIN ONLY
-  getAllFlights() {
-    return this.http.get(`${this.baseUrl}/airline/inventory/all`);
+
+  addFlight(flightData: any): Observable<FlightResponse> {
+    return this.http.post<FlightResponse>(`${this.baseUrl}/airline/inventory`, flightData);
   }
 
-  // ADMIN ONLY
-  addFlight(flight: any) {
-    return this.http.post(`${this.baseUrl}/airline/inventory`, flight);
+  getAllFlights(): Observable<FlightResponse[]> {
+    return this.http.get<FlightResponse[]>(`${this.baseUrl}/airline/inventory/all`);
   }
 }

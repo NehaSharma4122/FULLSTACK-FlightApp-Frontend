@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Important for *ngIf and *ngFor
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,26 +13,39 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DashboardComponent implements OnInit {
   bookings: any[] = [];
+  user: any;
 
-  constructor(private auth: AuthService) {}
-  get user() {
-    return this.auth.currentUser();
-  }
+  constructor(
+    private auth: AuthService, 
+    private bookingService: BookingService // <--- Injected Service
+  ) {}
 
   ngOnInit() {
-    this.loadBookings();
+    this.user = this.auth.currentUser();
+    this.loadRealTimeBookings();
   }
 
-  loadBookings() {
-    const savedBookings = localStorage.getItem('myBookings');
-    this.bookings = savedBookings ? JSON.parse(savedBookings) : [];
+  loadRealTimeBookings() {
+    if (this.user?.email) {
+      // CONNECTION POINT: Calling Backend via Service
+      this.bookingService.getBookingHistory(this.user.email).subscribe({
+        next: (data) => {
+          this.bookings = data; // Now dashboard shows real data from Database
+        },
+        error: (err) => console.error("Could not fetch history", err)
+      });
+    }
   }
 
   cancelBooking(pnr: string) {
-    if (!confirm("Are you sure you want to cancel this flight?")) return;
-    let current = JSON.parse(localStorage.getItem('myBookings') || '[]');
-    current = current.filter((b: any) => b.pnr !== pnr);
-    localStorage.setItem('myBookings', JSON.stringify(current));
-    this.loadBookings();
+    if (confirm("Cancel this flight?")) {
+      // CONNECTION POINT: Calling Backend DELETE endpoint
+      this.bookingService.cancelTicket(pnr).subscribe({
+        next: (res) => {
+          alert(res); // Shows "Ticket cancelled..." message
+          this.loadRealTimeBookings(); // Refresh list
+        }
+      });
+    }
   }
 }

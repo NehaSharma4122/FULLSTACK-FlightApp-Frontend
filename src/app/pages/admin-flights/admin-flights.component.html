@@ -1,46 +1,70 @@
-<h2>Flight Inventory</h2>
+<div class="inventory-wrapper">
+  <div class="container py-5">
+    
+    <div class="inventory-header">
+      <div class="title-area">
+        <h1>Global Flight Inventory</h1>
+        <p>Manage and monitor all active airline schedules</p>
+        <a routerLink="/admin" class="back-link">← Back to Dashboard</a>
+      </div>
+      <button routerLink="/add-flight" class="btn-primary">
+        + ADD NEW FLIGHT
+      </button>
+    </div>
 
-<button routerLink="/admin/add-flight" class="btn-primary">
-  + Add New Flight
-</button>
+    <div *ngIf="loading()" class="loader-box">
+      <div class="spinner"></div>
+      <p>Fetching real-time data...</p>
+    </div>
 
-<div *ngIf="loading">Loading flights...</div>
+    <div class="table-card card-shadow" *ngIf="!loading() && flights().length > 0">
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Airline</th>
+            <th>Flight No</th>
+            <th>Route</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Seats</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of flights()">
+            <td>
+              <div class="airline-info">
+                <img src="https://cdn-icons-png.flaticon.com/512/7893/7893979.png" alt="logo" class="mini-logo">
+                <span>{{ f.airline_name || f.airlineName }}</span>
+              </div>
+            </td>
+            <td><span class="flight-badge">{{ f.flightNumber }}</span></td>
+            <td>
+              <div class="route-info">
+                <strong>{{ f.fromPlace }}</strong> 
+                <span class="arrow">→</span> 
+                <strong>{{ f.toPlace }}</strong>
+              </div>
+            </td>
+            <td>{{ f.departure ? (f.departure | date:'MMM d, h:mm a') : 'N/A' }}</td>
+            <td>{{ f.arrival ? (f.arrival | date:'MMM d, h:mm a') : 'N/A' }}</td>
+            <td>
+              <div class="seat-count" [class.low]="f.availableSeats < 20">
+                {{ f.availableSeats }}
+              </div>
+            </td>
+            <td><span class="price-tag">₹{{ f.price }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<table *ngIf="!loading && flights.length">
-  <thead>
-    <tr>
-      <th>Airline</th>
-      <th>Flight No</th>
-      <th>Route</th>
-      <th>Departure</th>
-      <th>Arrival</th>
-      <th>Seats</th>
-      <th>Price</th>
-    </tr>
-  </thead>
+    <div class="empty-inventory" *ngIf="!loading() && flights().length === 0">
+      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="120">
+      <h3>No Flights in Database</h3>
+      <p>The global inventory is currently empty.</p>
+      <button class="btn-primary mt-3" routerLink="/add-flight">Add First Flight</button>
+    </div>
 
-  <tbody>
-    <tr *ngFor="let f of flights">
-      <td>
-        <img [src]="f.airline_logo" width="30">
-        {{ f.airline_name }}
-      </td>
-
-      <td>{{ f.flightNumber }}</td>
-
-      <td>{{ f.fromPlace }} → {{ f.toPlace }}</td>
-
-      <td>{{ f.departure | date:'short' }}</td>
-
-      <td>{{ f.arrival | date:'short' }}</td>
-
-      <td>{{ f.availableSeats }}</td>
-
-      <td>₹ {{ f.price }}</td>
-    </tr>
-  </tbody>
-</table>
-
-<div *ngIf="!loading && !flights.length">
-  No flights found.
+  </div>
 </div>

@@ -1,0 +1,59 @@
+<div class="booking-page-bg">
+  <div class="container py-5">
+    <div class="booking-header">
+      <h1>Flight Reservation Portal</h1>
+      <p>Secure your journey with Air India's premium service</p>
+    </div>
+
+    <div class="booking-form-container card-shadow">
+      <div class="form-title">
+        <h2>Enter Passenger Details</h2>
+      </div>
+
+      <form [formGroup]="bookForm" (ngSubmit)="bookFlight()">
+        <div class="form-row">
+          <div class="field">
+            <label>Flight Identification</label>
+            <input formControlName="flightId" placeholder="AI-XXXX" readonly>
+            <small>Automatically selected from search</small>
+          </div>
+          <div class="field">
+            <label>Passenger Full Name</label>
+            <input formControlName="name" placeholder="Enter name as per Passport">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Contact Email</label>
+            <input formControlName="email" type="email" placeholder="email@example.com">
+          </div>
+          <div class="field">
+            <label>Traveler Count</label>
+            <input formControlName="seats" type="number" min="1" max="9">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Gender</label>
+            <select formControlName="gender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <!-- Space for consistency -->
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" routerLink="/dashboard" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary-large">Confirm & Generate PNR</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

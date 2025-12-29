@@ -1,0 +1,29 @@
+<div class="container py-5">
+  <div class="search-section">
+    <h2>Retrieve Your Ticket</h2>
+    <div class="input-group">
+      <input type="text" [(ngModel)]="pnr" placeholder="Enter PNR Code">
+      <button (click)="onSearch()">SEARCH</button>
+    </div>
+  </div>
+
+  <div class="ticket-card" *ngIf="ticket">
+    <div class="ticket-head">AIR INDIA - BOARDING PASS</div>
+    <div class="ticket-body">
+      <div class="row">
+        <div><label>PASSENGER</label> <p>{{ticket.customerName}}</p></div>
+        <div><label>PNR</label> <p>{{ticket.pnr}}</p></div>
+      </div>
+      <div class="row">
+        <div><label>FLIGHT ID</label> <p>{{ticket.flightId}}</p></div>
+        <div><label>STATUS</label> <p class="status">{{ticket.status}}</p></div>
+      </div>
+      <div class="passenger-list">
+        <h4>Passenger Details:</h4>
+        <div *ngFor="let p of ticket.passenger">
+          {{p.name}} | {{p.gender}} | Age: {{p.age}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
