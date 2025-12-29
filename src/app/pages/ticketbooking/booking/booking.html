@@ -1,59 +1,156 @@
 <div class="booking-page-bg">
-  <div class="container py-5">
-    <div class="booking-header">
-      <h1>Flight Reservation Portal</h1>
-      <p>Secure your journey with Air India's premium service</p>
-    </div>
+  <div class="container">
 
-    <div class="booking-form-container card-shadow">
-      <div class="form-title">
-        <h2>Enter Passenger Details</h2>
+    <!-- FORM VIEW -->
+    <div class="animate-fade-in">
+      <div class="booking-header">
+        <h1>Flight Reservation</h1>
+        <p>SKY-HIGH LUXURY WITH AIR WORLD</p>
       </div>
 
-      <form [formGroup]="bookForm" (ngSubmit)="bookFlight()">
-        <div class="form-row">
-          <div class="field">
-            <label>Flight Identification</label>
-            <input formControlName="flightId" placeholder="AI-XXXX" readonly>
-            <small>Automatically selected from search</small>
+      <div *ngIf="!ticket" class="booking-form-container">
+        <form [formGroup]="bookForm" (ngSubmit)="bookFlight()">
+          <div class="form-title-bar">
+            <div class="id-badge">
+              <label style="color:white; font-size: 10px; display:block">FLIGHT ID</label>
+              <input formControlName="flightId" readonly
+                style="background:transparent; border:none; color:white; font-weight:bold; width: 250px; padding:0; outline:none">
+            </div>
+            <span>Step 2 of 2</span>
           </div>
-          <div class="field">
-            <label>Passenger Full Name</label>
-            <input formControlName="name" placeholder="Enter name as per Passport">
+
+          <div class="form-body-padding" style="padding: 40px;">
+            <!-- Contact Section -->
+            <div class="form-section">
+              <div class="section-label">
+                <span>Primary Contact Info</span>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label>Lead Passenger Name</label>
+                  <input formControlName="customerName" placeholder="As per Govt. ID">
+                </div>
+                <div class="field">
+                  <label>Email Address</label>
+                  <input formControlName="customerEmail" type="email">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label>Number of Seats</label>
+                  <input formControlName="totalSeats" type="number">
+                </div>
+                <div class="field">
+                  <label>Meal Preference</label>
+                  <select formControlName="mealpref">
+                    <option value="VEG">VEG</option>
+                    <option value="NON_VEG">NON-VEG</option>
+                    <option value="BOTH">BOTH</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Passenger Section -->
+            <div class="form-section" formArrayName="passenger">
+              <div class="section-label">
+                <span>Traveler Details</span>
+              </div>
+              <div *ngFor="let p of passengerArray.controls; let i = index" [formGroupName]="i" class="passenger-card">
+                <div class="pass-header">
+                  <span class="pass-num">TRAVELER #{{i + 1}}</span>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Full Name</label>
+                    <input formControlName="name">
+                  </div>
+                  <div class="field">
+                    <label>Gender</label>
+                    <select formControlName="gender">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Age</label>
+                    <input type="number" formControlName="age">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" routerLink="/dashboard" class="btn-secondary">Discard</button>
+              <button type="submit" class="btn-primary-large">BOOK FLIGHT NOW</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- TICKET VIEW -->
+      <div *ngIf="ticket as t" class="ticket-wrapper">
+        <div class="ticket-top">
+          <div>
+            <h2 style="margin:0; letter-spacing: 2px;">AIR WORLD</h2>
+            <p style="margin:5px 0 0; font-size: 12px; opacity: 0.8;">BOARDING PASS - E-TICKET</p>
+          </div>
+          <div class="pnr-display">
+            <h4>BOOKING REFERENCE</h4>
+            <div>{{t.pnr}}</div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="field">
-            <label>Contact Email</label>
-            <input formControlName="email" type="email" placeholder="email@example.com">
+        <div class="ticket-data">
+          <div class="data-grid">
+            <div class="data-item"><label>CustomerName</label>
+              <p>{{t.customerName}}</p>
+            </div>
+            <div class="data-item"><label>CustomerEmail</label>
+              <p>{{t.customerEmail}}</p>
+            </div>
+            <div class="data-item"><label>Flight</label>
+              <p>{{t.flightId}}</p>
+            </div>
+            <div class="data-item"><label>Status</label>
+              <p style="color:green">{{t.status}}</p>
+            </div>
+            <div class="data-item"><label>SEATS</label>
+              <p>{{t.numSeats}}</p>
+            </div>
+
           </div>
-          <div class="field">
-            <label>Traveler Count</label>
-            <input formControlName="seats" type="number" min="1" max="9">
-          </div>
+
+          <table class="pass-table">
+            <thead>
+              <tr>
+                <th>PASSENGER NAME</th>
+                <th>GENDER</th>
+                <th>AGE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of t.passenger">
+                <td>{{p.name}}</td>
+                <td>{{p.gender}}</td>
+                <td>{{p.age}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="form-row">
-          <div class="field">
-            <label>Gender</label>
-            <select formControlName="gender">
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <!-- Space for consistency -->
-          </div>
+        <div class="ticket-footer">
+          <span>Booking Date: {{t.bookingDate | date:'medium'}}</span>
+          <strong>Meal: {{t.mealpref}}</strong>
         </div>
 
-        <div class="form-actions">
-          <button type="button" routerLink="/dashboard" class="btn-secondary">Cancel</button>
-          <button type="submit" class="btn-primary-large">Confirm & Generate PNR</button>
+        <div class="no-print-actions">
+          <button class="btn-primary-large" onclick="window.print()">PRINT TICKET</button>
+          <button class="btn-secondary" routerLink="/dashboard">BACK TO DASHBOARD</button>
         </div>
-      </form>
+      </div>
+
     </div>
   </div>
-</div>

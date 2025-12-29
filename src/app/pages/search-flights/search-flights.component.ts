@@ -46,7 +46,7 @@ export class SearchFlightsComponent {
   onSearch() {
     if (!this.validateForm()) return;
 
-    this.loading.set(true); // 2. Set signal to true
+    this.loading.set(true); 
 
     const req = {
       fromPlace: this.searchData.from,
@@ -71,14 +71,22 @@ export class SearchFlightsComponent {
   }
 
   goToBooking(f: any) {
-    // Note: Backend might return 'id' instead of 'flightId'
-    localStorage.setItem('selectedFlight', JSON.stringify({
-      flightId: f.id || f.flightId, 
+    const id = f.id || f.flightId || f._id;
+    console.log("Storing flight for booking:", f);
+    console.log("Extracted ID:", id);
+
+    if (!id) {
+      alert("Error: Flight ID is missing from search results!");
+      return;
+    }
+    const flightToStore = {
+      flightId: id, 
       from: f.fromPlace,
       to: f.toPlace,
       date: f.departure || this.searchData.travelDate,
       price: f.price
-    }));
+    };
+    localStorage.setItem('selectedFlight', JSON.stringify(flightToStore));
     this.router.navigate(['/booking']);
   }
 }

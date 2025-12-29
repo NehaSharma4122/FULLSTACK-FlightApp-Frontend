@@ -9,7 +9,9 @@ export class BookingService {
   constructor(private http: HttpClient) {}
 
   bookFlight(flightId: string, bookingData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/booking/${flightId}`, bookingData);
+    return this.http.post(`${this.baseUrl}/booking/${flightId}`, bookingData,{
+      responseType: 'text' as 'json'
+    });
   }
 
   getTicket(pnr: string): Observable<any> {
