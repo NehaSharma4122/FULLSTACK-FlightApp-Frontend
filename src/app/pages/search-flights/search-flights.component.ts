@@ -2,12 +2,12 @@ import { Component, signal } from '@angular/core'; // Import signal
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { FlightService } from '../../services/flight.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-search-flights',
   standalone: true,
-  imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, FormsModule,RouterLink], 
   templateUrl: './search-flights.component.html',
   styleUrl: './search-flights.component.css'
 })

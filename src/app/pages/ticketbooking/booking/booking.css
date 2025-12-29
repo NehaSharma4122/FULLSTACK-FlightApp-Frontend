@@ -229,11 +229,12 @@ select:focus {
 .data-item label {
   color: #aaa;
   margin-bottom: 5px;
+  font-size: 16px;
 }
 
 .data-item p {
   margin: 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--ai-dark);
 }
@@ -247,7 +248,7 @@ select:focus {
 .pass-table th {
   text-align: left;
   color: #aaa;
-  font-size: 12px;
+  font-size: 16px;
   padding-bottom: 10px;
 }
 
@@ -255,6 +256,7 @@ select:focus {
   padding: 12px 0;
   border-bottom: 1px solid #fafafa;
   font-weight: 600;
+  font-size: 20px;
 }
 
 .ticket-footer {
@@ -271,6 +273,21 @@ select:focus {
   gap: 10px;
   justify-content: center;
   background: #eee;
+}
+.btn-secondary {
+    width: 20%;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: #333;
 }
 
 @media print {

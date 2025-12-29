@@ -29,8 +29,13 @@ export class BookingComponent implements OnInit {
 
   ngOnInit() {
     const selectedStr = localStorage.getItem('selectedFlight');
+    if (!selectedStr) {
+      alert("Please select a flight first!");
+      this.router.navigate(['/search']);
+      return;
+    }
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-
+    
     if (selectedStr) {
       const selected = JSON.parse(selectedStr);
 
