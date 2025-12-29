@@ -1,20 +1,50 @@
 <div class="container py-5">
-  <div class="search-header">
-    <h2>My Booking History</h2>
-    <div class="search-box">
-      <input type="email" [(ngModel)]="email" placeholder="Enter your registered email">
-      <button (click)="fetchHistory()">VIEW ALL TRIPS</button>
+  <div class="history-header">
+    <div class="title-area">
+      <h1>My Travel Records</h1>
+      <p>Showing all bookings for: <strong>{{ email }}</strong></p>
+    </div>
+    <button class="btn-primary" routerLink="/dashboard">Back to Dashboard</button>
+  </div>
+
+  <div *ngIf="loading()" class="text-center py-5">
+    <div class="spinner"></div>
+    <p>Loading your journeys...</p>
+  </div>
+
+  <div class="history-grid" *ngIf="!loading() && history().length > 0">
+    <div class="history-item card-shadow" *ngFor="let h of history()">
+      <div class="item-main">
+        <div class="h-pnr">PNR: {{ h.pnr }}</div>
+        <div class="h-route">
+          <strong>Flight ID:</strong> {{ h.flightId }}
+        </div>
+      </div>
+      
+      <div class="item-details">
+        <div class="detail">
+          <label>Traveller</label>
+          <span>{{ h.customerName }}</span>
+        </div>
+        <div class="detail">
+          <label>Booking Date</label>
+          <span>{{ h.bookingDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail">
+          <label>Seats</label>
+          <span>{{ h.numSeats }}</span>
+        </div>
+      </div>
+
+      <div class="h-status" [class.confirmed]="h.status === 'CONFIRMED'">
+        {{ h.status }}
+      </div>
     </div>
   </div>
 
-  <div class="history-grid" *ngIf="history.length > 0">
-    <div class="history-item" *ngFor="let h of history">
-      <div class="h-pnr">PNR: {{h.pnr}}</div>
-      <div class="h-details">
-        <p><strong>Flight:</strong> {{h.flightId}}</p>
-        <p><strong>Date:</strong> {{h.bookingDate | date:'medium'}}</p>
-      </div>
-      <div class="h-status">{{h.status}}</div>
-    </div>
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading() && history().length === 0">
+    <p>You haven't made any bookings yet.</p>
+    <button class="btn-primary" routerLink="/search">Book Your First Flight</button>
   </div>
 </div>

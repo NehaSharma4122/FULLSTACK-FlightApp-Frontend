@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private auth: AuthService, 
-    private bookingService: BookingService // <--- Injected Service
+    private bookingService: BookingService 
   ) {}
 
   ngOnInit() {
@@ -27,10 +27,9 @@ export class DashboardComponent implements OnInit {
 
   loadRealTimeBookings() {
     if (this.user?.email) {
-      // CONNECTION POINT: Calling Backend via Service
       this.bookingService.getBookingHistory(this.user.email).subscribe({
         next: (data) => {
-          this.bookings = data; // Now dashboard shows real data from Database
+          this.bookings = data; 
         },
         error: (err) => console.error("Could not fetch history", err)
       });
@@ -39,11 +38,10 @@ export class DashboardComponent implements OnInit {
 
   cancelBooking(pnr: string) {
     if (confirm("Cancel this flight?")) {
-      // CONNECTION POINT: Calling Backend DELETE endpoint
       this.bookingService.cancelTicket(pnr).subscribe({
         next: (res) => {
-          alert(res); // Shows "Ticket cancelled..." message
-          this.loadRealTimeBookings(); // Refresh list
+          alert(res); 
+          this.loadRealTimeBookings(); 
         }
       });
     }

@@ -23,7 +23,7 @@ export class BookingComponent implements OnInit {
       customerEmail: ['', [Validators.required, Validators.email]],
       totalSeats: [1, [Validators.required, Validators.min(1)]],
       mealpref: ['VEG'],
-      passenger: this.fb.array([]) // Matches backend name 'passenger'
+      passenger: this.fb.array([]) 
     });
   }
 
@@ -33,9 +33,7 @@ export class BookingComponent implements OnInit {
 
     if (selectedStr) {
       const selected = JSON.parse(selectedStr);
-      
-      // BACKEND USES 'id' in search results. 
-      // We must check both f.id and f.flightId just in case.
+
       const id = selected.id || selected.flightId; 
       
       console.log("Found ID for booking:", id);
@@ -48,7 +46,6 @@ export class BookingComponent implements OnInit {
       }
     }
 
-    // Ensure passengers array is initialized based on totalSeats (default 1)
     this.updatePassengerFields(this.bookForm.get('totalSeats')?.value);
 
     this.bookForm.get('totalSeats')?.valueChanges.subscribe(val => {
@@ -99,26 +96,23 @@ export class BookingComponent implements OnInit {
         
         let json: any;
 
-        // Case-1 backend returned JSON object
         if (typeof resp === 'object' && !Array.isArray(resp)) {
           json = resp;
         }
 
-        // Case-2 backend returned JSON string
         else if (typeof resp === 'string') {
           json = JSON.parse(resp);
         }
 
-        // Case-3 backend returned char array (your server format)
         else if (Array.isArray(resp)) {
           json = JSON.parse(resp.join(''));
         }
 
-        this.ticket = { ...json };  // clone to normal JS object
+        this.ticket = { ...json };
         this.ticket.totalSeats = json.numSeats;
 
-        console.log("🎟️ FINAL TICKET →", this.ticket);
-        this.cdr.detectChanges();   // <-- FORCE UI UPDATE
+        console.log("FINAL TICKET →", this.ticket);
+        this.cdr.detectChanges();   
 
         alert("Success! PNR: " + this.ticket.pnr);
       },

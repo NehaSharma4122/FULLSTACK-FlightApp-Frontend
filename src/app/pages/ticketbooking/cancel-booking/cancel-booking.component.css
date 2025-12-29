@@ -16,7 +16,7 @@
 }
 
 .text-danger {
-    color: #D41217;
+    color: var(--ai-red);
     margin-bottom: 10px;
 }
 
