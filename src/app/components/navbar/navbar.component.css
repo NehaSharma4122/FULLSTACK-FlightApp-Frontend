@@ -44,7 +44,7 @@
     border-radius: 4px;
 } */
 
-.logout-btn {
+/* .logout-btn {
     background: none;
     border: 1px solid var(--ai-red);
     color: var(--ai-red);
@@ -60,7 +60,7 @@
     background-color: var(--ai-red);
     color: white;
 
-}
+} */
 
 img{
     width: 100px;
@@ -73,4 +73,98 @@ img{
     padding: 0;
     width: 300px;
     height: 40px;
+}
+
+
+/* 1. The Container */
+.user-menu {
+  position: relative;
+  display: inline-block;
+}
+
+/* 2. The Main User Button 
+   Updated to match your nav-links hover style 
+*/
+.user-btn {
+  background: white;
+  color: #333;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 20px;
+  border: 2px solid var(--ai-gold); /* Outline in blue */
+  transition: all 0.3s ease;
+}
+
+/* Change button to blue when hovering over the menu area */
+.user-menu:hover .user-btn {
+  background: var(--ai-gold);
+  color: white;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0px; /* Aligns dropdown to the right edge of the Account button */
+  top: 100%;
+  background: white;
+  border-radius: 8px;
+  min-width: 200px; /* Adjust as needed */
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 1000;
+  border: 1px solid #eee;
+  margin-top: 5px;
+  
+  /* FIX STARTS HERE */
+  padding: 8px 0; /* Vertical padding is fine, keep horizontal at 0 */
+  overflow: hidden; /* Clips the blue hover to the rounded corners */
+}
+
+.user-menu:hover .dropdown-menu {
+  display: flex;
+}
+
+.user-menu::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 10px;
+}
+
+.dropdown-menu a, 
+.dropdown-menu button {
+  display: block;      /* Makes the link take the full row */
+  width: 100%;         /* Spans the full width of the white box */
+  box-sizing: border-box; /* Ensures padding doesn't increase width */
+  text-align: left;
+  padding: 12px 20px;  /* Horizontal padding moved here */
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover, 
+.dropdown-menu button:hover {
+  background: var(--ai-gold); /* Your blue color */
+  color: white !important;
+}
+
+.logout-btn {
+  color: var(--ai-red) !important; 
+  font-weight: 700;
+  border-top: 1px solid #eee !important;
+  margin-top: 5px;
+}
+
+.logout-btn:hover {
+  background: var(--ai-red) !important;
+  color: white !important;
 }

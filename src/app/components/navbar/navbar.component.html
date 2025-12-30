@@ -13,18 +13,27 @@
         <a routerLink="/register" class="btn-gold" routerLinkActive="active">Register</a>
       } 
       @else {
-        @let role =
-          auth.currentUser()?.role ??
-          auth.currentUser()?.roles?.[0] ??
-          '';
-        @if (role.includes('ROLE_ADMIN')) {
-          <a routerLink="/admin" routerLinkActive="active">Admin Dashboard</a>
+        <div class="user-menu">
+          <button class="user-btn">
+            {{ auth.currentUser()?.username || 'Account' }} ⯆
+          </button>
+
+          <div class="dropdown-menu">
+            @let role =
+              auth.currentUser()?.role ??
+              auth.currentUser()?.roles?.[0] ??
+              '';
+            @if (role.includes('ROLE_ADMIN')) {
+              <a routerLink="/admin" routerLinkActive="active">Admin Dashboard</a>
+            }
+            @else {
+              <a routerLink="/dashboard" routerLinkActive="active">User Dashboard</a>
+            }
+            <a routerLink="/reset-password" routerLinkActive="active">Change Password</a>
+            <button (click)="auth.logout()" class="logout-btn">Logout</button>
+          </div>
+        </div>
         }
-        @else {
-          <a routerLink="/dashboard" routerLinkActive="active">User Dashboard</a>
-        }
-        <button (click)="auth.logout()" class="logout-btn">Logout</button>
-      }
     </div>
   </div>
 </nav>

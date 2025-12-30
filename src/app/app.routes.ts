@@ -12,12 +12,15 @@ import { adminGuard } from './guards/admin.guard';
 import { SearchPnrComponent } from './pages/ticketbooking/search-pnr/search-pnr.component';
 import { CancelBookingComponent } from './pages/ticketbooking/cancel-booking/cancel-booking.component';
 import { SearchEmailComponent } from './pages/ticketbooking/search-email/search-email.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, 
   { path: 'search', component: SearchFlightsComponent }, 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+
   {
     path: 'dashboard',
     loadComponent: () =>

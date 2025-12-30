@@ -16,12 +16,13 @@ export class LoginComponent {
     password: '',
     role: 'ROLE_USER'
   };
+  errorMessage = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
   handleLogin() {
     console.log("Login button clicked!", this.loginData);
-    
+    this.errorMessage = '';
     this.auth.login(this.loginData).subscribe({
       next: (res: any) => {
 
@@ -45,8 +46,20 @@ export class LoginComponent {
 
 
       error: (err) => {
-        console.error("Login Error", err);
-        alert(err.error?.message || "Invalid email or password");
+        if (err.status === 426) {
+          alert("Your password has expired. Redirecting to change password.");
+          localStorage.setItem('resetEmail', this.loginData.email);
+          this.router.navigate(['/reset-password']);
+        } 
+        else if (err.status === 423) {
+          this.errorMessage = "Account locked due to failed attempts. Please try again in 15 mins.";
+        } 
+        else if (err.status === 401) {
+          this.errorMessage = "Invalid email or password.";
+        }
+        else{
+          this.errorMessage = "Server unreachable. Please ensure Gateway (8091) is running.";
+        }
       }
     });
   }

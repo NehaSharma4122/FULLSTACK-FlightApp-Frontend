@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize, Observable, of, tap } from 'rxjs';
+import { catchError, delay, finalize, Observable, of, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
@@ -35,6 +35,12 @@ export class AuthService {
 
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/signup`, userData);
+  }
+
+  changePassword(data: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}/change-password`, data, { headers });
   }
 
   getToken() {
@@ -97,5 +103,4 @@ export class AuthService {
               null   
       };
   }
-
 }
