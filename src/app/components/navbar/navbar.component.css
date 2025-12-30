@@ -76,15 +76,12 @@ img{
 }
 
 
-/* 1. The Container */
 .user-menu {
   position: relative;
   display: inline-block;
 }
 
-/* 2. The Main User Button 
-   Updated to match your nav-links hover style 
-*/
+
 .user-btn {
   background: white;
   color: #333;
@@ -93,13 +90,14 @@ img{
   cursor: pointer;
   font-weight: 500;
   font-size: 20px;
-  border: 2px solid var(--ai-gold); /* Outline in blue */
+  border: 2px solid var(--ai-red); /* Outline in blue */
   transition: all 0.3s ease;
 }
 
 /* Change button to blue when hovering over the menu area */
 .user-menu:hover .user-btn {
   background: var(--ai-gold);
+  border: 2px solid var(--ai-gold); /* Outline in blue */
   color: white;
 }
 
